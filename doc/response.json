@@ -1,0 +1,26 @@
+{
+  "id": 0,
+  "jsonrpc": "2.0",
+  "result": {
+    "source_lang": "DE",
+    "source_lang_is_confident": 1,
+    "target_lang": "EN",
+    "translations": [
+      {
+        "beams": [
+          {
+            "num_symbols": 5,
+            "postprocessed_sentence": "This is a test",
+            "score": -5000.35,
+            "totalLogProb": -0.922911
+          }
+        ],
+        "timeAfterPreprocessing": 0,
+        "timeReceivedFromEndpoint": 194,
+        "timeSentToEndpoint": 12,
+        "total_time_endpoint": 1
+      }
+    ]
+  }
+}
+

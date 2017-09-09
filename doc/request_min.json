@@ -1,0 +1,10 @@
+{
+    "method": "LMT_handle_jobs",
+    "params": {
+        "jobs": [
+            {
+                "raw_en_sentence": "Dies ist ein Test"
+            }
+        ]
+    }
+}

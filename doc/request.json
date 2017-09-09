@@ -1,0 +1,19 @@
+{
+    "jsonrpc": 2.0,
+    "method": "LMT_handle_jobs",
+    "params": {
+        "jobs": [
+            {
+                "kind": "default",
+                "raw_en_sentence": "Dies ist ein Test"
+            }
+        ],
+        "lang": {
+            "user_preferred_langs": ["EN", "DE"],
+            "source_lang_user_selected": "auto",
+            "target_lang": "DE"
+        },
+        "priority": -1
+    },
+    "id": 1
+}
