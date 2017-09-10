@@ -4,8 +4,6 @@ import re
 
 request_id = 0
 
-REGEX_couldContainMultipleSentences =  "/[.!?\":].*\S.*$/m"
-
 
 def translate(text, source="auto", target=None, preferred_langs=[]):
     paragraphs = split_paragraphs(text)
@@ -23,6 +21,7 @@ def translate(text, source="auto", target=None, preferred_langs=[]):
 def split_paragraphs(text):
     cleaned_paragraphs = []
 
+    # Split into paragraphs
     parts = re.split(r'(?:\s*\n)+\s*', text)
     for part in parts:
         re.sub(r'\s+', " ", part)
@@ -40,6 +39,7 @@ def request_split_sentences(paragraphs, source, preferred_langs):
     splitted_paragraphs = []
 
     for i, paragraph in enumerate(paragraphs):
+        # Check if the paragraph contains more than one sentence.
         if re.search(r'[.!?\":].*\S.*$', paragraph, re.M):
             request_paragraphs.append(paragraph)
             request_paragraph_ids.append(i)
@@ -81,7 +81,8 @@ def request_split_sentences(paragraphs, source, preferred_langs):
 
     return sentences
 
-#TODO (claudius): Do this while preserving original formatting
+
+# TODO (claudius): Do this while preserving original formatting
 def insert_translation(translated_sentences, original_text):
     return "\n".join(translated_sentences)
 
@@ -124,8 +125,12 @@ def request_translate(sentences, source, target, preferred_langs):
     assert response["id"] == current_id
 
     return_ = {
-        "translations": [response["result"]["translations"][i]["beams"][0]["postprocessed_sentence"]
-                        for i in range(len(response["result"]["translations"]))],
+        "translations": [
+            # FIXME: Not very readable
+            response["result"]["translations"][i]["beams"][0]["postprocessed_sentence"]
+            if len(response["result"]["translations"][i]["beams"]) else ""
+            for i in range(len(response["result"]["translations"]))
+        ],
         "source": response["result"]["source_lang"],
         "target": response["result"]["target_lang"]
     }
