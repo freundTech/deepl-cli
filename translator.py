@@ -105,7 +105,7 @@ def request_translate(sentences, source, target, preferred_langs):
                 } for sentence in sentences
             ],
             "lang": {
-                "user_preferred_langs": json.dumps(preferred_langs),
+                "user_preferred_langs": preferred_langs,
             },
         },
         "jsonrpc": "2.0",

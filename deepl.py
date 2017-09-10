@@ -10,6 +10,7 @@ def print_results(result, verbose=False):
         print("Translated from {} to {}".format(result["source"], result["target"]))
     print(result["translation"])
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Translate text to other languages using deepl.com")
     parser.add_argument("-s", "--source", help="Source language", metavar="lang")
@@ -20,21 +21,36 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     locale_ = locale.getdefaultlocale()
-    default_lang = locale_[0].split("_")[0].upper()
+    preferred_langs = [locale_[0].split("_")[0].upper()]
+
+    if not args.source is None:
+        source = args.source.upper()
+    else:
+        source = 'auto'
+    if not args.target is None:
+        target = args.target.upper()
+    else:
+        target = None
 
     if len(args.text) == 0:
         if sys.stdin.isatty():
             print("Please input text to translate")
             while True:
                 text = input("> ")
-                result = translator.translate(text, args.source, args.target, args.verbose)
+                print(preferred_langs)
+                result = translator.translate(text, source, target, preferred_langs)
                 print_results(result, args.verbose)
+
+                if result["source"] not in preferred_langs:
+                    preferred_langs.append(result["source"])
+                if result["target"] not in preferred_langs:
+                    preferred_langs.append(result["target"])
         else:
             text = sys.stdin.read()
-            result = translator.translate(text, args.source, args.target, args.verbose)
+            result = translator.translate(text, source, target, preferred_langs)
             print_results(result, args.verbose)
 
     else:
         text = " ".join(args.text)
-        result = translator.translate(text, args.source, args.target, args.verbose)
+        result = translator.translate(text, source, target, preferred_langs)
         print_results(result, args.verbose)
