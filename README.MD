@@ -18,3 +18,7 @@ This is *NOT* an official API and might break at any moment.
 	  -s lang, --source lang   Source language
 	  -t lang, --target lang   Target language
 	  -v, --verbose            Print additional information
+
+
+This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with DeepL GmbH,
+or any of its subsidiaries or its affiliates.
