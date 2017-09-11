@@ -24,7 +24,7 @@ This can also be used as a library:
 ```python
 import deepl
 
-translation, extra_data = deepl.translate("This is a text", target="DE")
+translation, extra_data = deepl.translate("This is a test", target="DE")
 ```
 
 This project is not affiliated, associated, authorized, endorsed by, or in any way officially connected with DeepL GmbH,

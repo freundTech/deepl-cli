@@ -40,10 +40,10 @@ def main():
                 result, extra_data = translator.translate(text, source, target, preferred_langs)
                 print_results(result, extra_data, args.verbose)
 
-                if result["source"] not in preferred_langs:
-                    preferred_langs.append(result["source"])
-                if result["target"] not in preferred_langs:
-                    preferred_langs.append(result["target"])
+                if extra_data["source"] not in preferred_langs:
+                    preferred_langs.append(extra_data["source"])
+                if extra_data["target"] not in preferred_langs:
+                    preferred_langs.append(extra_data["target"])
         else:
             text = sys.stdin.read()
             result, extra_data = translator.translate(text, source, target, preferred_langs)
