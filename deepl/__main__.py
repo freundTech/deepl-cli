@@ -1,8 +1,8 @@
-import sys
-import locale
 import argparse
+import locale
+import sys
 
-import translator
+from deepl import translator
 
 
 def print_results(result, verbose=False):
@@ -10,8 +10,7 @@ def print_results(result, verbose=False):
         print("Translated from {} to {}".format(result["source"], result["target"]))
     print(result["translation"])
 
-
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(description="Translate text to other languages using deepl.com")
     parser.add_argument("-s", "--source", help="Source language", metavar="lang")
     parser.add_argument("-t", "--target", help="Target language", metavar="lang")
@@ -37,7 +36,6 @@ if __name__ == "__main__":
             print("Please input text to translate")
             while True:
                 text = input("> ")
-                print(preferred_langs)
                 result = translator.translate(text, source, target, preferred_langs)
                 print_results(result, args.verbose)
 
@@ -54,3 +52,7 @@ if __name__ == "__main__":
         text = " ".join(args.text)
         result = translator.translate(text, source, target, preferred_langs)
         print_results(result, args.verbose)
+
+
+if __name__ == "__main__":
+    main()
