@@ -6,19 +6,18 @@ request_id = 0
 
 
 def translate(text, source="auto", target=None, preferred_langs=[]):
-    paragraphs = split_paragraphs(text)
-    sentences = request_split_sentences(paragraphs, source, preferred_langs)
-    result = request_translate(sentences, source, target, preferred_langs)
-    translation = insert_translation(result["translations"], text)
+    paragraphs = _split_paragraphs(text)
+    sentences = _request_split_sentences(paragraphs, source, preferred_langs)
+    result = _request_translate(sentences, source, target, preferred_langs)
+    translation = _insert_translation(result["translations"], text)
 
-    return {
-        "translation": translation,
+    return translation, {
         "source": result["source"],
         "target": result["target"]
     }
 
 
-def split_paragraphs(text):
+def _split_paragraphs(text):
     cleaned_paragraphs = []
 
     # Split into paragraphs
@@ -32,7 +31,7 @@ def split_paragraphs(text):
     return cleaned_paragraphs
 
 
-def request_split_sentences(paragraphs, source, preferred_langs):
+def _request_split_sentences(paragraphs, source, preferred_langs):
     request_paragraphs = []
     request_paragraph_ids = []
 
@@ -83,11 +82,11 @@ def request_split_sentences(paragraphs, source, preferred_langs):
 
 
 # TODO (claudius): Do this while preserving original formatting
-def insert_translation(translated_sentences, original_text):
+def _insert_translation(translated_sentences, original_text):
     return "\n".join(translated_sentences)
 
 
-def request_translate(sentences, source, target, preferred_langs):
+def _request_translate(sentences, source, target, preferred_langs):
     global request_id
     request_id += 1
 

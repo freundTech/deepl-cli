@@ -5,10 +5,11 @@ import sys
 from deepl import translator
 
 
-def print_results(result, verbose=False):
+def print_results(result, extra_data, verbose=False):
     if verbose:
-        print("Translated from {} to {}".format(result["source"], result["target"]))
-    print(result["translation"])
+        print("Translated from {} to {}".format(extra_data["source"], extra_data["target"]))
+    print(result)
+
 
 def main():
     parser = argparse.ArgumentParser(description="Translate text to other languages using deepl.com")
@@ -36,8 +37,8 @@ def main():
             print("Please input text to translate")
             while True:
                 text = input("> ")
-                result = translator.translate(text, source, target, preferred_langs)
-                print_results(result, args.verbose)
+                result, extra_data = translator.translate(text, source, target, preferred_langs)
+                print_results(result, extra_data, args.verbose)
 
                 if result["source"] not in preferred_langs:
                     preferred_langs.append(result["source"])
@@ -45,13 +46,13 @@ def main():
                     preferred_langs.append(result["target"])
         else:
             text = sys.stdin.read()
-            result = translator.translate(text, source, target, preferred_langs)
-            print_results(result, args.verbose)
+            result, extra_data = translator.translate(text, source, target, preferred_langs)
+            print_results(result, extra_data, args.verbose)
 
     else:
         text = " ".join(args.text)
-        result = translator.translate(text, source, target, preferred_langs)
-        print_results(result, args.verbose)
+        result, extra_data = translator.translate(text, source, target, preferred_langs)
+        print_results(result, extra_data, args.verbose)
 
 
 if __name__ == "__main__":
