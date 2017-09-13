@@ -4,3 +4,8 @@
 #Python
 __pycache__/
 *.pyc
+
+#setuptools
+build/
+dist/
+*.egg-info/

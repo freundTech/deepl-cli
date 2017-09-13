@@ -2,7 +2,7 @@ import argparse
 import locale
 import sys
 
-from deepl import translator
+from . import translator
 
 
 def print_results(result, extra_data, verbose=False):
