@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 from codecs import open
 from os import path
@@ -25,10 +25,11 @@ setup(
         "Programming Language :: Python :: 3.6",
     ],
     keywords='translation deepl cli',
-    packages=['deepl'],
+    packages=find_packages(include=['deepl']),
     install_requires=["requests"],
     python_requires='>=3',
     entry_points={
         "console_scripts": ["deepl=deepl.__main__:main"]
-    }
+    },
+    test_suite="test"
 )
