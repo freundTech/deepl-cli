@@ -1,5 +1,6 @@
 import requests
 import json
+import sys
 import re
 
 request_id = 0
@@ -9,7 +10,7 @@ def translate(text, source="auto", target=None, preferred_langs=[]):
     paragraphs = _split_paragraphs(text)
     sentences = _request_split_sentences(paragraphs, source, preferred_langs)
     result = _request_translate(sentences, source, target, preferred_langs)
-    translation = _insert_translation(result["translations"], text)
+    translation = _insert_translation(result["translations"], sentences, text)
 
     return translation, {
         "source": result["source"],
@@ -23,7 +24,6 @@ def _split_paragraphs(text):
     # Split into paragraphs
     parts = re.split(r'(?:\s*\n)+\s*', text)
     for part in parts:
-        re.sub(r'\s+', " ", part)
         part = part.lstrip().rstrip()
         if len(part) > 0:
             cleaned_paragraphs.append(part)
@@ -81,9 +81,23 @@ def _request_split_sentences(paragraphs, source, preferred_langs):
     return sentences
 
 
-# TODO (claudius): Do this while preserving original formatting
-def _insert_translation(translated_sentences, original_text):
-    return "\n".join(translated_sentences)
+def _insert_translation(translated_sentences, original_sentences, original_text):
+    # We are going to modify those arrays, so copy them beforehand.
+    translated_sentences = translated_sentences[:]
+    original_sentences = original_sentences[:]
+    for i, orig_sentence in enumerate(original_sentences):
+        if translated_sentences[i] is None:
+            translated_sentences[i] = orig_sentence  # Sentence couldn't be translated
+
+        whitespace = re.findall(r'^\s*', original_text)[0]
+        translated_sentences[i] = whitespace+translated_sentences[i]
+        original_text = original_text[len(whitespace):]
+        if original_text.startswith(orig_sentence):
+            original_text = original_text[len(orig_sentence):]
+        else:
+            print("\n\nSomething went wrong. Please report this to the maintainers.", file=sys.stderr)
+
+    return "".join(translated_sentences)
 
 
 def _request_translate(sentences, source, target, preferred_langs):
@@ -127,7 +141,7 @@ def _request_translate(sentences, source, target, preferred_langs):
         "translations": [
             # FIXME: Not very readable
             response["result"]["translations"][i]["beams"][0]["postprocessed_sentence"]
-            if len(response["result"]["translations"][i]["beams"]) else ""
+            if len(response["result"]["translations"][i]["beams"]) else None
             for i in range(len(response["result"]["translations"]))
         ],
         "source": response["result"]["source_lang"],

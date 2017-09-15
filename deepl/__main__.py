@@ -2,7 +2,7 @@ import argparse
 import locale
 import sys
 
-from . import translator
+from deepl import translator
 
 
 def print_results(result, extra_data, verbose=False):
@@ -15,6 +15,7 @@ def main():
     parser = argparse.ArgumentParser(description="Translate text to other languages using deepl.com")
     parser.add_argument("-s", "--source", help="Source language", metavar="lang")
     parser.add_argument("-t", "--target", help="Target language", metavar="lang")
+    parser.add_argument("-i", "--interactive", help="Force interactive mode", action="store_true")
     parser.add_argument("-v", "--verbose", help="Print additional information", action="store_true")
     parser.add_argument("text", nargs='*')
 
@@ -32,8 +33,8 @@ def main():
     else:
         target = None
 
-    if len(args.text) == 0:
-        if sys.stdin.isatty():
+    if len(args.text) == 0 or args.interactive:
+        if sys.stdin.isatty() or args.interactive:
             print("Please input text to translate")
             while True:
                 text = input("> ")
