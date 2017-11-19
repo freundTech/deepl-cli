@@ -114,7 +114,8 @@ def _request_translate(sentences, source, target, preferred_langs):
         "params": {
             "jobs": [
                 {
-                    "raw_en_sentence": sentence
+                    "raw_en_sentence": sentence,
+                    "kind": "default"
                 } for sentence in sentences
             ],
             "lang": {
