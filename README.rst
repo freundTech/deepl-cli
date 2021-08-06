@@ -1,3 +1,6 @@
+This project is discontinued and broken. Please use the official DeepL API python client: https://github.com/DeepLcom/deepl-python
+==================================================================================================================================
+
 DeepL commandline client
 ========================
 
